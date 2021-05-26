@@ -1,49 +1,50 @@
 import fs from "fs";
 import os from "os";
-import {IcpuAverage, ItestObject} from "../interface/interfaces";
-import {testObject} from "./bench";
+import { IcpuAverage, ItestObject, InormalizePath} from "../interface/interfaces";
+import { testObject } from "./bench";
 
-export function normalizePath(pathToObject: string) : string {
+export function normalizePath(pathToObject: string): InormalizePath {
   const parsedValueToNumber = parseInt(pathToObject);
-    if (isNaN(parsedValueToNumber)) {
-      return pathToObject
-    } throw new Error("Wrong path")
-}
-export function validatePath(pathToObject: string): string {
-    if (!fs.existsSync(pathToObject)) {
-      throw new Error("Its not a file");
-    }
-    if (pathToObject.split('.').pop() !== "js") {
-      throw new Error("Wrong file format");
-    }
-    return testObject
+  return {parsedValueToNumber, pathToObject}
   
+}
+export function validatePath(pathAfterNormalize: InormalizePath): ItestObject {
+  if (!isNaN(pathAfterNormalize.parsedValueToNumber)) {
+    throw new Error("Incorrect path");
+  }
+  
+  if (!fs.existsSync(pathAfterNormalize.pathToObject)) {
+    
+    throw new Error("Its not a file");
+  }
+  if (pathAfterNormalize.pathToObject.split(".").pop() !== "js") {
+    throw new Error("Incorrect file format! Need a file in '.js' format");
+  }
+  return testObject;
 }
 
-export function validateObject(object:ItestObject) {
-    if (!object.title && !object.tests){
-      throw new Error("Its not an object with tests")
-    }
-    return object;
-  } 
-  
+export function validateObject(objectWithTests: ItestObject) {
+  if (!objectWithTests.title && !objectWithTests.tests) {
+    throw new Error("Its not an object with tests");
+  }
+  return objectWithTests;
+}
+
 export function parseAsInt(value: string): number {
-  const parsedValue = parseInt(value);
-  if (isNaN(parsedValue)) {
-    throw `${value} is not a number`;
-  } else if (parsedValue <= 0) {
+  const parsedValueToNumber = parseInt(value);
+  return parsedValueToNumber
+}
+
+export function validateIterationsAndRepeats(parsedValueToNumber: number): number {
+  if (isNaN(parsedValueToNumber)) {
+    throw `${parsedValueToNumber} is not a number`;
+  } else if (parsedValueToNumber <= 0) {
     throw `There can be no negative number`;
   }
-  return parsedValue;
+  return parsedValueToNumber;
 }
 
-export function delay(ms: number) : Promise<void> {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-export function cpuAverage() : IcpuAverage {
+export function cpuAverage(): IcpuAverage {
   let totalIdle = 0,
     totalTick = 0;
   let cpus = os.cpus();
@@ -55,4 +56,8 @@ export function cpuAverage() : IcpuAverage {
     totalIdle += cpu.times.idle;
   }
   return { idle: totalIdle / cpus.length, total: totalTick / cpus.length };
+}
+
+export async function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

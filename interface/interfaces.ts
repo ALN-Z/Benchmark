@@ -1,4 +1,4 @@
-export interface ItestObject {
+export interface Itest {
   name: string;
   getTest: () => number;
 }
@@ -15,13 +15,10 @@ export interface IcpuAverage {
 
 export interface ItestObject {
   title: string;
-  tests: ItestObject[];
+  tests: Itest[];
 }
 
-
-export interface IsetCounters {
-  counterTime: number;
-  counterMemoryUsage: number;
-  counterCpu: number;
-  testTitle: string;
+export interface InormalizePath {
+  parsedValueToNumber: number;
+  pathToObject: string;
 }

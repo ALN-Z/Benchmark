@@ -1,85 +1,45 @@
-import { delay, cpuAverage } from "./utils";
-import { ItestObject, IperiodMeasurement, IsetCounters } from "../interface/interfaces";
+import { Result } from './result';
+import { delay } from "./utils";
+import {
+  Itest,
+} from "../interface/interfaces";
 
-export function runWarmingUp(test: ItestObject, iterations: number) {
+
+
+export function runWarmingUp(test: Itest, iterations: number) {
   for (let i = 0; i <= iterations; i++) {
     test.getTest();
   }
-  console.log('Прогрев завершен. Выполнение тестов...')
+  console.log("Прогрев завершен. Выполнение тестов...");
 }
 
-export function runBench(tests : ItestObject[], iterations: number, repeats: number) {
-  for(const test of tests){
-    getTestsBench(test, iterations, repeats);
+export async function runBench(tests: Itest[], iterations: number, repeats: number) {
+  const result = new Result(repeats)
+  for (const test of tests) {
+    await getTestsBench(test, iterations, repeats);
   }
+  result.showResultArray()
 }
 
-function getTestsBench(
-  test: ItestObject,
-  iterations: number,
-  repeats: number
-) {
-  let counters = setCounters()
-    for (let i = 0; i < repeats; i++) {
-      const startMeasure = periodMeasurement();
-      for (let i = 0; i <= iterations; i++) {
-        test.getTest();
-        counters.testTitle = test.name;
-      }
-      const endMeasure = periodMeasurement();
-      counters.counterTime += getUsedTime(endMeasure.time, startMeasure.time);
-      counters.counterMemoryUsage += getUsedMemory();
-      counters.counterCpu += getCPUPercentage(endMeasure, startMeasure);
-      delay(500).then();
+async function getTestsBench(test: Itest, iterations: number, repeats: number) {
+  const result = new Result(repeats)
+  result.setTitle(test.name);
+  for (let i = 0; i < repeats; i++) {
+    runTest(test,iterations,result)
+    result.setTime();
+    result.setMemory();
+    result.setCpu();
+    await delay(500);
   }
-  logInfo(counters, repeats);
+  result.setResultArray()
 }
 
-function setCounters(): IsetCounters  {
-  return {
-  counterTime: 0,
-  counterMemoryUsage: 0,
-  counterCpu: 0,
-  testTitle: ""
+
+
+function runTest(test,iterations,result) {
+  result.startMeasurement();
+  for (let i = 0; i <= iterations; i++) {
+    test.getTest();  
   }
-}
-
-function getCPUPercentage(
-  endCPUinfo: IperiodMeasurement,
-  startCPUinfo: IperiodMeasurement
-) {
-  let idleDifference: number = endCPUinfo.cpu.idle - startCPUinfo.cpu.idle;
-  let totalDifference: number = endCPUinfo.cpu.total - startCPUinfo.cpu.total;
-  let percentageCPU: number =
-    100 - ~~((100 * idleDifference) / totalDifference);
-  return percentageCPU;
-}
-
-function getUsedMemory(): number {
-  return process.memoryUsage().heapUsed / 1024 / 1024;
-}
-
-function getUsedTime(endTime: number, startTime: number): number {
-  return endTime - startTime;
-}
-
-function periodMeasurement(): IperiodMeasurement {
-  return {
-    time: Date.now(),
-    cpu: cpuAverage(),
-  };
-}
-function logInfo(
-  counters: IsetCounters,
-  repeats: number
-) {
-  console.log(counters.testTitle);
-  console.log("Avg work time: " + (counters.counterTime / repeats).toFixed(2) + " ms");
-  console.log(
-    "Avg memory used: " + (counters.counterMemoryUsage / repeats).toFixed(2) + " MB"
-  );
-  console.log("Avg CPU used: " + (counters.counterCpu / repeats).toFixed(2) + " %");
-  console.log(
-    "---------------------------------------------------------------"
-  );
+  result.endMeasurement();
 }

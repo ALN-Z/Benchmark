@@ -34,6 +34,6 @@ const forOfCycleTest = {
 
 module.exports = testObject = {
     title: 'Test object',
-    tests: [forCycleTest, forEachCycleTest, forOfCycleTest]
+    tests: [forEachCycleTest, forOfCycleTest, forCycleTest]
 }
 
