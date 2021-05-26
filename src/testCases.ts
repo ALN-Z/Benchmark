@@ -3,7 +3,7 @@ import { delay } from "./utils";
 import {
   Itest,
 } from "../interface/interfaces";
-
+import {OperationMetrics} from './operationMetrics'
 
 
 export function runWarmingUp(test: Itest, iterations: number) {
@@ -22,6 +22,7 @@ export async function runBench(tests: Itest[], iterations: number, repeats: numb
 }
 
 async function getTestsBench(test: Itest, iterations: number, repeats: number) {
+  const operationMetrics = new OperationMetrics(repeats)
   const result = new Result(repeats)
   result.setTitle(test.name);
   for (let i = 0; i < repeats; i++) {
