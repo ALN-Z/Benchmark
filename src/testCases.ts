@@ -3,8 +3,6 @@ import { delay } from "./utils";
 import {
   Itest,
 } from "../interface/interfaces";
-import {OperationMetrics} from './operationMetrics'
-
 
 export function runWarmingUp(test: Itest, iterations: number) {
   for (let i = 0; i <= iterations; i++) {
@@ -16,14 +14,12 @@ export function runWarmingUp(test: Itest, iterations: number) {
 export async function runBench(tests: Itest[], iterations: number, repeats: number) {
   const result = new Result(repeats)
   for (const test of tests) {
-    await getTestsBench(test, iterations, repeats);
+    await getTestsBench(test, iterations, repeats, result);
   }
   result.showResultArray()
 }
 
-async function getTestsBench(test: Itest, iterations: number, repeats: number) {
-  const operationMetrics = new OperationMetrics(repeats)
-  const result = new Result(repeats)
+async function getTestsBench(test: Itest, iterations: number, repeats: number, result) {
   result.setTitle(test.name);
   for (let i = 0; i < repeats; i++) {
     runTest(test,iterations,result)
@@ -34,8 +30,6 @@ async function getTestsBench(test: Itest, iterations: number, repeats: number) {
   }
   result.setResultArray()
 }
-
-
 
 function runTest(test,iterations,result) {
   result.startMeasurement();

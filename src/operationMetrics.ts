@@ -19,45 +19,45 @@ export class OperationMetrics {
     errTime: number = 0;
     constructor(public repeats: number){
     }
-    getUsedMemory(): number {
+    private getUsedMemory(): number {
         return process.memoryUsage().heapUsed / 1024 / 1024;
       }
       
-      getUsedTime(): number {
+    private  getUsedTime(): number {
         return this.periodTime = this.endTime.time - this.startTime.time;
         
       }
       
-      startMeasurement(): void {
+    public startMeasurement(): void {
         this.startTime = {
           time: Date.now(),
           cpu: cpuAverage(),
         };
       }
     
-      endMeasurement():   void {
+    public endMeasurement():   void {
         this.endTime = {
           time: Date.now(),
           cpu: cpuAverage(),
         };
       }
-      setTitle(name:string) {
+    public setTitle(name:string) {
         this.testTitle = name
       }
     
-      setTime() {
+    public setTime() {
         
         this.counterTime += this.getUsedTime()
         this.arrayOfTimes.push(this.periodTime)
       }
-      setMemory(){
+    public  setMemory(){
         this.counterMemoryUsage += this.getUsedMemory()
       }
-      setCpu(){
+    public  setCpu(){
         this.counterCpu += this.getCPUPercentage()
       }
     
-      getCPUPercentage() {
+    private getCPUPercentage() {
         let idleDifference: number = this.endTime.cpu.idle - this.startTime.cpu.idle;
         let totalDifference: number = this.endTime.cpu.total - this.startTime.cpu.total;
         let percentageCPU: number =
@@ -65,7 +65,7 @@ export class OperationMetrics {
         return percentageCPU;
       }
   
-      calculateAvgResults() {
+    public  calculateAvgResults() {
         this.avgMemory = Math.round((this.counterMemoryUsage / this.repeats) * 100) / 100;
         this.avgCPU = Math.round((this.counterCpu / this.repeats) * 100) / 100;
         this.avgTime = Math.round((this.counterTime / this.repeats) * 100) / 100;
