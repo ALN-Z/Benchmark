@@ -1,6 +1,6 @@
 export interface Itest {
   name: string;
-  getTest: () => number;
+  runTest: () => number;
 }
 
 export interface IperiodMeasurement {
@@ -21,4 +21,13 @@ export interface ItestObject {
 export interface InormalizePath {
   parsedValueToNumber: number;
   pathToObject: string;
+}
+
+export interface IresultArray {
+  "Test name" : string;
+  "Avg memory (mb)" : number;
+  "Avg CPU (%)" : number;
+  "Avg time (ms)" : number;
+  "Diff (%)" ?: string;
+  "ErrTime (%)" : number;
 }

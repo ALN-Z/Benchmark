@@ -3,7 +3,7 @@ arr.fill(1,0,100000);
 
 const forCycleTest = {
   name: 'Test For cycle',
-  getTest: () => {
+  runTest: () => {
     let res = 0;
     for ( let i =0 ; i<arr.length; i++){
       res = i;
@@ -13,7 +13,7 @@ const forCycleTest = {
 }
 const forEachCycleTest = {
   name: 'Test ForEach cycle',
-  getTest: () => {
+  runTest: () => {
     let res = 0;
     arr.forEach((elem) => {
       res = elem;
@@ -23,7 +23,7 @@ const forEachCycleTest = {
 }
 const forOfCycleTest = {
   name: 'Test ForOf cycle',
-  getTest: () => {
+  runTest: () => {
     let res = 0;
     for (let value of arr){
       res = value;
