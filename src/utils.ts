@@ -1,7 +1,7 @@
 import fs from "fs";
 import os from "os";
-import { IcpuAverage, ItestObject, Inormalize, IobjectWithNormalizedNumbers} from "../interface/interfaces";
-import { params } from "./bench";
+import { IcpuAverage, ItestObject, Inormalize} from "../interface/interfaces";
+
 
 export function normalize(enteredValue: string): Inormalize {
   const parsedValueToNumber = parseInt(enteredValue);
@@ -29,11 +29,6 @@ export function validateObject(objectWithTests: ItestObject) {
   }
   return objectWithTests;
 }
-
-// export function parseAsInt(numberOfIterationsAndRepeats: string): IobjectWithNormalizedNumbers {
-//   const parsedValueToNumber = parseInt(numberOfIterationsAndRepeats);
-//   return {parsedValueToNumber, numberOfIterationsAndRepeats}
-// }
 
 export function validateIterationsAndRepeats(parsedNumber: Inormalize): number {
   if (isNaN(parsedNumber.parsedValueToNumber)) {

@@ -31,9 +31,3 @@ export interface IresultArray {
   "Diff (%)" ?: string;
   "ErrTime (%)" : number;
 }
-
-
-export interface IobjectWithNormalizedNumbers {
-  parsedValueToNumber: number;
-  numberOfIterationsAndRepeats: string;
-}

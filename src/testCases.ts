@@ -3,6 +3,7 @@ import { delay } from "./utils";
 import { Itest } from "../interface/interfaces";
 
 export function runWarmingUp(test: Itest, iterations: number) {
+  console.log('Начало прогрева...')
   for (let i = 0; i <= iterations; i++) {
     test.runTest();
   }
