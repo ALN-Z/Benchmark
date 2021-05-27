@@ -1,26 +1,26 @@
 import fs from "fs";
 import os from "os";
-import { IcpuAverage, ItestObject, InormalizePath} from "../interface/interfaces";
-import { testObject } from "./bench";
+import { IcpuAverage, ItestObject, Inormalize, IobjectWithNormalizedNumbers} from "../interface/interfaces";
+import { params } from "./bench";
 
-export function normalizePath(pathToObject: string): InormalizePath {
-  const parsedValueToNumber = parseInt(pathToObject);
-  return {parsedValueToNumber, pathToObject}
+export function normalize(enteredValue: string): Inormalize {
+  const parsedValueToNumber = parseInt(enteredValue);
+  return {parsedValueToNumber, enteredValue}
   
 }
-export function validatePath(pathAfterNormalize: InormalizePath): ItestObject {
+export function validatePath(pathAfterNormalize: Inormalize):  string {
   if (!isNaN(pathAfterNormalize.parsedValueToNumber)) {
     throw new Error("Incorrect path");
   }
   
-  if (!fs.existsSync(pathAfterNormalize.pathToObject)) {
+  if (!fs.existsSync(pathAfterNormalize.enteredValue)) {
     
     throw new Error("Its not a file");
   }
-  if (pathAfterNormalize.pathToObject.split(".").pop() !== "js") {
+  if (pathAfterNormalize.enteredValue.split(".").pop() !== "js") {
     throw new Error("Incorrect file format! Need a file in '.js' format");
   }
-  return testObject;
+  return pathAfterNormalize.enteredValue;
 }
 
 export function validateObject(objectWithTests: ItestObject) {
@@ -30,18 +30,18 @@ export function validateObject(objectWithTests: ItestObject) {
   return objectWithTests;
 }
 
-export function parseAsInt(value: string): number {
-  const parsedValueToNumber = parseInt(value);
-  return parsedValueToNumber
-}
+// export function parseAsInt(numberOfIterationsAndRepeats: string): IobjectWithNormalizedNumbers {
+//   const parsedValueToNumber = parseInt(numberOfIterationsAndRepeats);
+//   return {parsedValueToNumber, numberOfIterationsAndRepeats}
+// }
 
-export function validateIterationsAndRepeats(parsedValueToNumber: number): number {
-  if (isNaN(parsedValueToNumber)) {
-    throw `${parsedValueToNumber} is not a number`;
-  } else if (parsedValueToNumber <= 0) {
+export function validateIterationsAndRepeats(parsedNumber: Inormalize): number {
+  if (isNaN(parsedNumber.parsedValueToNumber)) {
+    throw `${parsedNumber.enteredValue} is not a number`;
+  } else if (parsedNumber.parsedValueToNumber <= 0) {
     throw `There can be no negative number`;
   }
-  return parsedValueToNumber;
+  return parsedNumber.parsedValueToNumber;
 }
 
 export function cpuAverage(): IcpuAverage {

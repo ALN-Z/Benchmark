@@ -51,6 +51,12 @@ export class OperationMetrics {
     this.counterCpu += this.getCPUPercentage();
   }
 
+  setMetrics(){
+    this.setTime();
+    this.setMemory();
+    this.setCpu();
+  }
+
   private getCPUPercentage() {
     let idleDifference: number =
       this.endTime.cpu.idle - this.startTime.cpu.idle;

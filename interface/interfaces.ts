@@ -18,9 +18,9 @@ export interface ItestObject {
   tests: Itest[];
 }
 
-export interface InormalizePath {
+export interface Inormalize {
   parsedValueToNumber: number;
-  pathToObject: string;
+  enteredValue: string;
 }
 
 export interface IresultArray {
@@ -30,4 +30,10 @@ export interface IresultArray {
   "Avg time (ms)" : number;
   "Diff (%)" ?: string;
   "ErrTime (%)" : number;
+}
+
+
+export interface IobjectWithNormalizedNumbers {
+  parsedValueToNumber: number;
+  numberOfIterationsAndRepeats: string;
 }

@@ -30,9 +30,7 @@ async function runTestsWithRepeats(
   result.setTitle(test.name);
   for (let i = 0; i < repeats; i++) {
     runTest(test, iterations, result);
-    result.setTime();
-    result.setMemory();
-    result.setCpu();
+    result.setMetrics();
     await delay(500);
   }
   result.setArrayWithResults();
